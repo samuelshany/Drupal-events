@@ -59,5 +59,18 @@ This approach demonstrates a **custom-built module** where the entire event mana
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/drupal-events-module.git
-   cd drupal-events-module
+   git clone [https://github.com/yourusername/drupal-events-module.git](https://github.com/samuelshany/Drupal-events.git)
+   cd drupal-events
+composer install
+/modules/custom/events_module/
+│
+├── src/
+│   ├── Controller/
+│   ├── Form/
+│   ├── Model/
+│   └── Plugin/
+│
+├── config/
+├── events.info.yml
+├── events.routing.yml
+└── events.module
