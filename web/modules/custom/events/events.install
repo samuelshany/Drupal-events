@@ -1,0 +1,139 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function events_schema() {
+//Category
+$schema['categories'] = [
+  'description' => 'Stores category data.',
+  'fields' => [
+    'id' => ['type' => 'serial', 'not null' => TRUE],
+    'title' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+    'description' => ['type' => 'text', 'not null' => FALSE],
+    'created' => ['type' => 'int', 'not null' => TRUE],
+    'changed' => ['type' => 'int', 'not null' => TRUE],
+  ],
+  'primary key' => ['id'],
+];
+//Events data
+$schema['events'] = [
+  'description' => 'Stores event data.',
+  'fields' => [
+    'id' => ['type' => 'serial', 'not null' => TRUE],
+    'title' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+    'description' => ['type' => 'text', 'not null' => FALSE],
+    'start_date' => ['type' => 'int', 'not null' => TRUE],
+    'end_date' => ['type' => 'int', 'not null' => TRUE],
+    'category_id' => [
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'description' => 'Reference to category.',
+    ],
+    'category_name' => [
+      'type' => 'varchar',
+      'length' => 255,
+      'description' => 'Reference to category.',
+    ],
+    'created_by' => [
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'description' => 'Reference to {users}.uid for creator.',
+    ],
+    'updated_by' => [
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => FALSE,
+      'description' => 'Reference to {users}.uid for last updater.',
+    ],
+    'created' => ['type' => 'int', 'not null' => TRUE],
+    'changed' => ['type' => 'int', 'not null' => TRUE],
+  ],
+  'primary key' => ['id'],
+
+  'foreign keys' => [
+    'fk_created_by_user' => [
+      'table' => 'users',
+      'columns' => ['created_by' => 'uid'],
+    ],
+    'fk_updated_by_user' => [
+      'table' => 'users',
+      'columns' => ['updated_by' => 'uid'],
+    ],
+  ],
+];
+
+// Events images
+  $schema['event_images'] = [
+    'description' => 'Stores image references for events or other content.',
+    'fields' => [
+      'id' => ['type' => 'serial', 'not null' => TRUE],
+      'image_fid' => ['type' => 'int', 'not null' => TRUE],
+      'event_id' => ['type' => 'int', 'not null' => TRUE],
+      'created' => ['type' => 'int', 'not null' => TRUE],
+    ],
+    'primary key' => ['id'],
+  ];
+
+  //table for event configuration
+    $schema['event_config'] = [
+  'description' => 'Stores configuration for events.',
+  'fields' => [
+    'id' => [
+      'type' => 'serial',
+      'not null' => TRUE,
+    ],
+    'events_per_page' => [
+      'type' => 'int',
+      'not null' => TRUE,
+    ],
+    'show_old' => [
+    'type' => 'int',//used instead of boolean as it refused and return error
+    'size' => 'tiny',
+    'not null' => TRUE,
+    'default' => 1,
+],
+
+  ],
+  'primary key' => ['id'],
+];
+// event config log
+ $schema['event_config_log'] = [
+  'description' => 'Stores configuration for events.',
+  'fields' => [
+    'id' => [
+      'type' => 'serial',
+      'not null' => TRUE,
+    ],
+    'config' => [
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => TRUE,
+    ],
+    'value' => [
+      'type' => 'varchar',
+      'length' => 5,
+      'not null' => TRUE,
+    ],
+    'user_id' => [
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'description' => 'Reference to {users}.uid',
+    ],
+     'created' => ['type' => 'int', 'not null' => TRUE],
+  ],
+  'primary key' => ['id'],
+  'foreign keys' => [
+    'fk_user_id' => [
+      'table' => 'users',
+      'columns' => ['user_id' => 'uid'],
+    ],
+  ],
+];
+
+  return $schema;
+}
+
