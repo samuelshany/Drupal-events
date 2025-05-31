@@ -1,0 +1,7 @@
+name: 'Events'
+type: module
+description: 'Handles Events CRUD with settings and history tracking  .'
+core_version_requirement: ^10
+package: Custom
+dependencies:
+  - user
