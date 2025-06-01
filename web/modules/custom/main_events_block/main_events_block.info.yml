@@ -1,0 +1,7 @@
+name: 'Main Events Block'
+type: module
+description: 'Provides a block to display the latest 5 main events.'
+core_version_requirement: ^10
+package: Custom
+dependencies:
+  - node
