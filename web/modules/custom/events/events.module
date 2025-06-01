@@ -1,6 +1,7 @@
 <?php
 use Drupal\Core\Form\FormStateInterface;
-
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Datetime\DrupalDateTime;
 /**
  * Implements hook_form_FORM_ID_alter().
  */
@@ -39,5 +40,39 @@ function events_theme($existing, $type, $theme, $path) {
       'path' => $path . '/templates',
     ],
   ];
+}
+
+/**
+ * Implements hook_views_pre_build().
+ */
+function events_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+//used frontend instead of main_events as the list in frontpage
+  if ($view->id() === 'frontpage') {
+
+    // Get DB connection
+    $connection = \Drupal::database();
+
+    // Fetch config from DB
+    $config = $connection->select('event_config', 'ec')
+      ->fields('ec')
+      ->range(0, 1)
+      ->execute()
+      ->fetchObject();
+
+    if ($config) {
+      $show_old = $config->show_old;
+      $events_per_page = (int) ($config->events_per_page ?? 10);
+
+      // Set pagination
+      $view->setItemsPerPage($events_per_page);
+
+      // Filter out old events based on field_event_date
+      if (!$show_old) {
+        $now = \Drupal::time()->getCurrentTime();
+
+        $view->query->addWhere(0, 'field_end_date', $now, '>');
+      }
+    }
+  }
 }
 

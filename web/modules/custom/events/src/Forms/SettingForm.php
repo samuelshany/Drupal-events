@@ -2,12 +2,12 @@
 
 namespace Drupal\events\Forms;
 
-use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Database\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class SettingForm extends FormBase {
+class SettingForm extends ConfigFormBase  {
 
   /**
    * @var \Drupal\Core\Database\Connection
@@ -20,7 +20,9 @@ class SettingForm extends FormBase {
   public function __construct(Connection $database) {
     $this->database = $database;
   }
-
+protected function getEditableConfigNames(): array {
+    return ['events.settings'];
+  }
   /**
    * {@inheritdoc}
    */
@@ -62,11 +64,11 @@ class SettingForm extends FormBase {
       '#min' => 1,
       '#required' => TRUE,
     ];
-   $form['submit'] = [
-      '#type' => 'submit',
-      '#value' => $config->id ? $this->t('Update') : $this->t('Save'),
-    ];
-    return $form;
+  //  $form['submit'] = [
+  //     '#type' => 'submit',
+  //     '#value' => $config->id ? $this->t('Update') : $this->t('Save'),
+  //   ];
+   return parent::buildForm($form, $form_state);
   }
 
   /**
@@ -114,6 +116,7 @@ public function submitForm(array &$form, FormStateInterface $form_state) {
   }
 
   $this->messenger()->addStatus($this->t('Event configuration has been saved.'));
+    parent::submitForm($form, $form_state);
 }
 
 }
