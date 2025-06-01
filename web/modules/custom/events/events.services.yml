@@ -1,0 +1,6 @@
+services:
+  events.event_filter_form:
+    class: Drupal\events\Form\EventFillterByCategory
+    arguments: ['@database']
+    tags:
+      - { name: form }

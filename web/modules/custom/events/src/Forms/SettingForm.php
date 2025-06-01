@@ -108,22 +108,11 @@ public function submitForm(array &$form, FormStateInterface $form_state) {
         'config' => $key,
         'user_id' => $current_user_id,
         'value' => (string) $value,
-        // 'created' => \Drupal::time()->getCurrentTime(),
+         'created' => \Drupal::time()->getCurrentTime(),
       ])
       ->execute();
   }
-   // Log changes in event_config_log
-  $current_user_id = \Drupal::currentUser()->id();
-  foreach ($config_data as $key => $value) {
-    $this->database->insert('event_config_log')
-      ->fields([
-        'config' => $key,
-        'user_id' => $current_user_id,
-        'value' => (string) $value,
-        // 'created' => \Drupal::time()->getCurrentTime(),
-      ])
-      ->execute();
-  }
+
   $this->messenger()->addStatus($this->t('Event configuration has been saved.'));
 }
 

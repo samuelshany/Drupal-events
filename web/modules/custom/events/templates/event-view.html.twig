@@ -1,0 +1,16 @@
+<div class="event-view">
+  <h2>{{ event.title }}</h2>
+  <p><strong>Description:</strong> {{ event.description }}</p>
+  <p><strong>Category:</strong> {{ event.category_name }}</p>
+  <p><strong>Start:</strong> {{ event.start_date_formatted }}</p>
+  <p><strong>End:</strong> {{ event.end_date_formatted}}</p>
+
+  {% if images %}
+    <div class="event-images">
+      <h3>Images</h3>
+      {% for image_url in images %}
+        <img src="{{ image_url }}" alt="Event image" style="max-width:200px; margin:5px;" />
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

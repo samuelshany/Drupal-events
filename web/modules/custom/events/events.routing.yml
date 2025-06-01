@@ -22,10 +22,10 @@ events.edit:
   requirements:
     _permission: 'access content'
 events.view:
-  path: '/events/{id}/edit'
+  path: '/events/{id}/view'
   defaults:
-    _form: '\Drupal\events\Forms\EventForm'
-    _title: 'Edit Event'
+    _controller: '\Drupal\events\Controller\EventController::view'
+    _title: 'view Event'
   requirements:
     _permission: 'access content'
 

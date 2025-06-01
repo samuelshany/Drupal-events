@@ -24,3 +24,20 @@ function events_main_events_date_validate(array &$form, FormStateInterface $form
     }
   }
 }
+/**
+ * Implements hook_theme().
+ */
+function events_theme($existing, $type, $theme, $path) {
+  return [
+    'event_view' => [
+      'variables' => [
+        'event' => NULL,
+        'images' => [],
+        'date_formatter' => NULL,
+      ],
+      'template' => 'event-view',
+      'path' => $path . '/templates',
+    ],
+  ];
+}
+

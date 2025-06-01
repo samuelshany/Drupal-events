@@ -22,52 +22,56 @@ class EventConfigLogController extends ControllerBase
     );
   }
 
-  public function list()
-  {
-    $header = ['ID', 'Config', 'Value', 'By user'];
-    $rows = [];
-    $query = $this->connection->select('event_config_log', 'ecl');
-    $query->leftJoin('users_field_data', 'u', 'ecl.user_id = u.uid');
-    $query->fields('ecl', ['id', 'config', 'value']);
-    $query->fields('u', ['name']);
+ public function list()
+{
+  $date_formatter = \Drupal::service('date.formatter');
+  $header = ['ID', 'Config', 'Value', 'By user', 'Created at'];
+  $rows = [];
 
-    // Add pager with limit
-    $query->extend('Drupal\Core\Database\Query\PagerSelectExtender')->limit(10);
+  $query = $this->connection->select('event_config_log', 'ecl');
+  $query->leftJoin('users_field_data', 'u', 'ecl.user_id = u.uid');
+  $query->fields('ecl', ['id', 'config', 'value', 'created']);
+  $query->fields('u', ['name']);
 
-    $results = $query->execute();
+  $paged_query = $query->extend('Drupal\Core\Database\Query\PagerSelectExtender')->limit(5);
 
-    foreach ($results as $row) {
-      $rows[] = [
-        $row->id,
-        $row->config,
-        $row->value,
-        $row->name ?: $this->t('Unknown user'),
-      ];
-    }
 
-    return [
-      '#type' => 'container',
-      'log_table' => [
-        '#type' => 'table',
-        '#header' => $header,
-        '#rows' => $rows,
-        '#empty' => $this->t('No log found.'),
-        '#attributes' => [
-          'class' => ['my-custom-table'],
-          'style' => 'width: 100%; border-collapse: collapse;text-align:center',
-        ],
-      ],
-      'pager' => [
-        '#type' => 'pager',
-      ],
-      '#attached' => [
-        'library' => [
-          'events/events.styles',
-        ],
-      ],
-         '#cache' => [
-        'max-age' => 0,  // disables caching for this page
-      ],
+  $results = $paged_query->execute();
+
+  foreach ($results as $row) {
+    $rows[] = [
+      $row->id,
+      $row->config,
+      $row->value,
+      $row->name ?: $this->t('Unknown user'),
+      $date_formatter->format($row->created, 'short'),
     ];
   }
+
+  return [
+    '#type' => 'container',
+    'log_table' => [
+      '#type' => 'table',
+      '#header' => $header,
+      '#rows' => $rows,
+      '#empty' => $this->t('No log found.'),
+      '#attributes' => [
+        'class' => ['my-custom-table'],
+        'style' => 'width: 100%; border-collapse: collapse;text-align:center',
+      ],
+    ],
+    'pager' => [
+      '#type' => 'pager',
+    ],
+    '#attached' => [
+      'library' => [
+        'events/events.styles',
+      ],
+    ],
+    '#cache' => [
+      'max-age' => 0,
+    ],
+  ];
+}
+
 }

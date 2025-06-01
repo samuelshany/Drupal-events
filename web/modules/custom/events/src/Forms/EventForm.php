@@ -59,11 +59,12 @@ class EventForm extends FormBase
     $start_date = NULL;
     $end_date = NULL;
     $categories = $this->connection->select('categories', 'c')
-      ->fields('c', ['id', 'name'])
-      ->execute();
+    ->fields('c', ['id', 'title'])
+    ->execute();
+
     $category_options = [];
     foreach ($categories as $category) {
-      $category_options[$category->id] = $category->name;
+      $category_options[$category->id] = $category->title;
     }
     $default_images = [];
     $selected_category_id = NULL;
@@ -225,6 +226,9 @@ class EventForm extends FormBase
       'changed' => $time,
       'updated_by' => $current_user->id(),
       'category_id' => $form_state->getValue('category_id'),
+      'category_name' => $this->connection->select('categories', 'c')
+        ->fields('c', ['title'])
+        ->condition('id', $form_state->getValue('category_id'))->execute()->fetchField()
     ];
 
     if ($id = $form_state->getValue('id')) {

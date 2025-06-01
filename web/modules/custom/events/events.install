@@ -4,18 +4,7 @@
  * Implements hook_schema().
  */
 function events_schema() {
-//Category
-$schema['categories'] = [
-  'description' => 'Stores category data.',
-  'fields' => [
-    'id' => ['type' => 'serial', 'not null' => TRUE],
-    'title' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
-    'description' => ['type' => 'text', 'not null' => FALSE],
-    'created' => ['type' => 'int', 'not null' => TRUE],
-    'changed' => ['type' => 'int', 'not null' => TRUE],
-  ],
-  'primary key' => ['id'],
-];
+
 //Events data
 $schema['events'] = [
   'description' => 'Stores event data.',
