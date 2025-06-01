@@ -36,8 +36,13 @@ This approach demonstrates a **custom-built module** where the entire event mana
   - Custom configuration entity or table to store module settings
   - History of edits (what data changed, when, and by whom)
 - **Routing**:
+  - `/categories` — List all categories
+  - `/categories/add` — add new category
+  - `/categories/id/delete` — delete category
+  - `/categories/id/edit` — edit category
   - `/events` — List all events
   - `/events/add` — Form to add new events
+  - `/events/{id}/view` — view  event
   - `/events/{id}/update` — Form to update existing events
   - `/events/{id}/delete` — Form to delete events
   - `/events/config` — Configuration form
@@ -74,3 +79,5 @@ composer install
 ├── events.info.yml
 ├── events.routing.yml
 └── events.module
+2.install 2 modules categories and events 
+3. clear cash using  drush cr
