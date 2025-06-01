@@ -1,0 +1,31 @@
+categories.list:
+  path: '/categories'
+  defaults:
+    _controller: '\Drupal\categories\Controller\CategoryController::list'
+    _title: 'Categories List'
+  requirements:
+    _permission: 'access content'
+
+categories.add:
+  path: '/categories/add'
+  defaults:
+    _form: '\Drupal\categories\Form\CategoryForm'
+    _title: 'Add category'
+  requirements:
+    _permission: 'access content'
+
+categories.edit:
+  path: '/categories/{id}/edit'
+  defaults:
+    _form: '\Drupal\categories\Form\CategoryForm'
+    _title: 'Edit category'
+  requirements:
+    _permission: 'access content'
+
+categories.delete:
+  path: '/categories/{id}/delete'
+  defaults:
+    _controller: '\Drupal\categories\Controller\CategoryController::delete'
+    _title: 'Delete category'
+  requirements:
+    _permission: 'access content'

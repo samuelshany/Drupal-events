@@ -1,0 +1,7 @@
+name: 'Categories'
+type: module
+description: 'Handles Categories CRUD   .'
+core_version_requirement: ^10
+package: Custom
+dependencies:
+  - user
