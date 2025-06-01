@@ -1,0 +1,232 @@
+Events Module Documentation
+Overview
+The Events module provides a comprehensive event management system for Drupal 10, including:
+
+CRUD operations for events
+
+Event configuration settings
+
+Change logging for configuration
+
+Category filtering
+
+Image uploads for events
+
+Paginated event listings
+
+File Structure
+Module Definition
+events.info.yml - Defines module metadata and dependencies
+
+events.libraries.yml - Defines CSS styles for the module
+
+events.routing.yml - Defines all routes and their controllers
+
+events.services.yml - Defines service dependencies
+
+Controllers
+EventController.php - Handles event listing, viewing and deletion
+
+EventConfigLogController.php - Handles display of configuration change logs
+
+Forms
+EventForm.php - Handles creation and editing of events
+
+EventFillterByCategory.php - Provides category filtering for events
+
+SettingForm.php - Handles module configuration settings
+
+Detailed Documentation
+EventController.php
+Methods:
+list()
+
+Displays a paginated list of events and whether show old events or not 
+
+Handles filtering by category
+
+Shows latest events when requested
+
+Applies configuration settings (events per page, show old events)
+
+Provides links to add new events and view latest events
+
+Renders a filter form for categories
+
+Disables caching for real-time data
+
+buildEventRow(object $row): array
+
+Helper method to format a single event row
+
+Creates links for view, edit and delete operations
+
+Formats dates using the date formatter service
+
+view($id)
+
+Displays detailed view of a single event
+
+Shows event title, description, dates and category
+
+Displays all uploaded images for the event
+
+Throws 404 if event not found
+
+Disables caching for real-time data
+
+delete($id)
+
+Deletes an event by ID
+
+Redirects to event listing after deletion
+
+EventConfigLogController.php
+Methods:
+list()
+
+Displays a paginated log of configuration changes
+
+Shows ID, config name, value, user who made change, and timestamp
+
+Formats dates using the date formatter service
+
+Disables caching for real-time data
+
+EventFillterByCategory.php
+Methods:
+buildForm(array $form, FormStateInterface $form_state)
+
+Creates a dropdown select form with all available categories
+
+Auto-submits when category is selected
+
+Uses GET method to preserve pagination
+
+Pre-selects current category filter if present
+
+submitForm(array &$form, FormStateInterface $form_state)
+
+Empty implementation as form auto-submits via GET
+
+EventForm.php
+Methods:
+buildForm(array $form, FormStateInterface $form_state, $id = NULL)
+
+Builds the event add/edit form
+
+Pre-populates fields when editing an existing event
+
+Includes fields for title, description, dates, category and images
+
+Handles file uploads for event images
+
+Sets form to tree structure to properly handle arrays
+
+validateForm(array &$form, FormStateInterface $form_state)
+
+Validates that start date is not in the past
+
+Ensures end date is after start date
+
+Validates uploaded images are of correct type (jpg, jpeg, png)
+
+submitForm(array &$form, FormStateInterface $form_state)
+
+Handles creation and updating of events
+
+Manages associated images (upload, delete old ones)
+
+Tracks creation/modification timestamps and users
+
+Updates category name when category ID changes
+
+Redirects to event list after submission
+
+SettingForm.php
+Methods:
+buildForm(array $form, FormStateInterface $form_state)
+
+Builds the configuration form
+
+Includes settings for showing old events and events per page
+
+Pre-populates with current configuration values
+
+submitForm(array &$form, FormStateInterface $form_state)
+
+Saves configuration to custom database table
+
+Logs all configuration changes for audit purposes
+
+Handles both initial creation and updates of settings
+
+Shows success message after saving
+
+Database Schema
+The module uses several custom tables:
+
+events - Stores event data
+
+id, title, description, start_date, end_date, created, changed, created_by, updated_by, category_id, category_name
+
+event_images - Stores references to event images
+
+id, event_id, image_fid, created
+
+event_config - Stores module configuration
+
+id, show_old, events_per_page
+
+event_config_log - Logs configuration changes
+
+id, config, value, user_id, created
+
+categories - Stores event categories (assumed to exist)
+
+id, title
+
+Usage Instructions
+Event Management
+
+Navigate to /events to view the event list
+
+Use "Add New Event" to create events
+
+Click "View", "Edit" or "Delete" on event rows for respective actions
+
+Filtering
+
+Use the category dropdown to filter events
+
+Click "Latest Events" to see the 5 most recent events
+
+Configuration
+
+Navigate to /events/config to adjust settings
+
+View change history at /events/config/log
+
+Dependencies
+Core Drupal 'user' module
+
+Requires Drupal 10 or higher
+
+Styling
+CSS styles are defined in css/events.styles.css
+
+Applied to all module pages via the events.styles library
+
+Security
+All routes require 'access content' permission
+
+Form submissions are properly validated
+
+File uploads are restricted to image types
+
+User input is properly sanitized
+
+Caching
+All dynamic pages disable caching (max-age: 0)
+
+Ensures real-time display of events and configuration
