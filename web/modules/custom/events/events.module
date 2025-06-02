@@ -2,6 +2,8 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\Core\Datetime\DrupalDateTime;
+
+// this class is for content type events to validate the date and paginate the result in view usnig the config keys from config table
 /**
  * Implements hook_form_FORM_ID_alter().
  */
@@ -46,8 +48,8 @@ function events_theme($existing, $type, $theme, $path) {
  * Implements hook_views_pre_build().
  */
 function events_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
-//used frontend instead of main_events as the list in frontpage
-  if ($view->id() === 'frontpage') {
+//used frontpage instead of main_events as the list in frontpage
+  if ($view->id() === 'main_events2' || $view->id() === 'frontpage') {
 
     // Get DB connection
     $connection = \Drupal::database();
