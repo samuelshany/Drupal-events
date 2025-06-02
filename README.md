@@ -47,6 +47,10 @@ This approach demonstrates a **custom-built module** where the entire event mana
   - `/events/{id}/delete` — Form to delete events
   - `/events/config` — Configuration form
   - `/events/config/log` — View the history of configuration changes
+    //for content type events
+   -/main-events2 -list all events created by content type
+   -/node/add/main_events -add new content type of type main events
+   -/admin/structure/taxonomy/manage/category/add - add new category taxonomy  
 - **Validation**: Manual validation within the form classes
 - **Access Control**: Users can access these routes after module installation and cache rebuild.
 
@@ -66,18 +70,8 @@ This approach demonstrates a **custom-built module** where the entire event mana
    ```bash
    git clone [https://github.com/yourusername/drupal-events-module.git](https://github.com/samuelshany/Drupal-events.git)
    cd drupal-events
-composer install
-/modules/custom/events_module/
-│
-├── src/
-│   ├── Controller/
-│   ├── Form/
-│   ├── Model/
-│   └── Plugin/
-│
-├── config/
-├── events.info.yml
-├── events.routing.yml
-└── events.module
-2.install 2 modules categories and events 
-3. clear cash using  drush cr
+1.import  database from attached file link-event (3).sql (attached in the repo)
+2.composer install
+
+3.install 3 modules categories , events and main_events_block 
+4. clear cash using  drush cr
