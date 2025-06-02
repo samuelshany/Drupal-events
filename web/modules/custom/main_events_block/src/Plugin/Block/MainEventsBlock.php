@@ -5,6 +5,7 @@ namespace Drupal\main_events_block\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\node\Entity\Node;
 
+// created to manage the block content type main_events to get the lates 5 events created from the content type main_events
 /**
  * Provides a 'Main Events' Block.
  *
@@ -26,7 +27,7 @@ class MainEventsBlock extends BlockBase {
     $nids = $query->condition('status', 1)
       ->condition('type', 'main_events')
       ->sort('field_end_date', 'DESC')
-      ->range(0, 2)
+      ->range(0, 5)
       ->execute();
 
     $nodes = Node::loadMultiple($nids);
